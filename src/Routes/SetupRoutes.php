@@ -4,9 +4,10 @@ namespace Tualo\Office\Sass\Routes;
 
 use Tualo\Office\Basic\TualoApplication as App;
 use Tualo\Office\Basic\Route as BasicRoute;
-use Tualo\Office\Basic\IRoute;
 use Tualo\Office\Sass\ImportSCSS;
+use Tualo\Office\Sass\Sass;
 use MatthiasMullie\Minify\CSS;
+use Tualo\Office\Basic\Path;
 
 class SetupRoute extends \Tualo\Office\Basic\RouteWrapper
 {
@@ -33,8 +34,6 @@ class SetupRoute extends \Tualo\Office\Basic\RouteWrapper
 
         BasicRoute::add('/scss/compile' . '', function ($matches) {
             App::contenttype('application/json');
-            $cachePath = implode(DIRECTORY_SEPARATOR, [App::get('basePath') . '/' . 'cache']);
-            $cachePath = App::configuration('scss', 'cache_path', $cachePath);
 
             if (($cmd = App::configuration('scss', 'cmd', false)) == false) throw new \Exception('scss cmd not found');
 
@@ -42,7 +41,7 @@ class SetupRoute extends \Tualo\Office\Basic\RouteWrapper
             $db = App::get('session')->getDB();
             $data = $db->direct($sql);
             foreach ($data as $row) {
-                $filename = implode(DIRECTORY_SEPARATOR, [App::get('tempPath'), 'scss', $row['filename']]);
+                $filename = Path::join(Sass::getCompilerPath(), $row['filename']);
                 $dirname = dirname($filename);
                 if (!is_dir($dirname)) {
                     mkdir($dirname, 0777, true);
@@ -50,13 +49,13 @@ class SetupRoute extends \Tualo\Office\Basic\RouteWrapper
                 file_put_contents($filename, $row['content']);
             }
 
-            $resfilename = implode(DIRECTORY_SEPARATOR, [$cachePath, 'bootstrap.css']);
+            $resfilename = Path::join(Sass::getCachePath(), 'bootstrap.css');
             if (!is_dir(dirname($resfilename))) {
                 mkdir(dirname($resfilename), 0777, true);
             }
 
-            $entryPoint = implode(DIRECTORY_SEPARATOR, [App::get('tempPath'), 'scss', 'bootstrap.scss']);
-            if (file_exists(implode(DIRECTORY_SEPARATOR, [App::get('tempPath'), 'scss', 'index.scss']))) $entryPoint = implode(DIRECTORY_SEPARATOR, [App::get('tempPath'), 'scss', 'index.scss']);
+            $entryPoint = Path::join(Sass::getCompilerPath(),  'bootstrap.scss');
+            if (file_exists(Path::join(Sass::getCompilerPath(), 'index.scss'))) $entryPoint = Path::join(Sass::getCompilerPath(), 'index.scss');
             exec($cmd . ' ' . $entryPoint . ' ' . $resfilename . ' 2>&1', $return, $res_code);
             App::result('return', $return);
             if ($res_code != 0) {
@@ -65,7 +64,7 @@ class SetupRoute extends \Tualo\Office\Basic\RouteWrapper
             } else {
             }
             $minifier = new CSS($resfilename);
-            $resfilename = implode(DIRECTORY_SEPARATOR, [$cachePath, 'bootstrap.min.css']);
+            $resfilename = Path::join(Sass::getCachePath(), 'bootstrap.min.css');
             $minifier->minify($resfilename);
 
             App::result('success', true);
