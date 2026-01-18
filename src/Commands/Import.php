@@ -5,7 +5,7 @@ namespace Tualo\Office\Sass\Commands;
 use Garden\Cli\Cli;
 use Garden\Cli\Args;
 use Tualo\Office\Basic\ICommandline;
-use Tualo\Office\ExtJSCompiler\Helper;
+use Tualo\Office\Basic\CommandLineInstallSQL;
 use Tualo\Office\Basic\TualoApplication as App;
 use Tualo\Office\Basic\PostCheck;
 use Tualo\Office\Sass\ImportSCSS;
@@ -22,7 +22,7 @@ class Import implements ICommandline
     {
         $cli->command(self::getCommandName())
             ->description('import basic scss files')
-            ->opt('client', 'only use this client', true, 'string')
+            ->opt('client', 'only use this client', false, 'string')
             ->opt('force', 'force import', false, 'boolean')
             ->opt('path', 'path to import from', '', 'string')
             ->opt('prefix', 'prefix in db', '', 'string');
@@ -58,7 +58,18 @@ class Import implements ICommandline
             ImportSCSS::import($args->getOpt('force', false), App::get('clientDB'), $args->getOpt('path', ''), $args->getOpt('prefix', ''));
         };
         $clientName = $args->getOpt('client');
-        if (is_null($clientName)) $clientName = '';
+        if (is_null($clientName)) {
+            $clientName = '';
+            if (!CommandLineInstallSQL::defaultClient()) {
+                $clientName = '';
+            } else {
+                $clientName = CommandLineInstallSQL::defaultClient();
+            }
+        }
+        if ($clientName == '') {
+            PostCheck::formatPrintLn(['red'], "\t" . ' --client is required when multiple clients exist');
+            exit();
+        }
         self::setupClients("", $clientName, $args, $install);
     }
 }

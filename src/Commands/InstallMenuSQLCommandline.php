@@ -5,6 +5,7 @@ namespace Tualo\Office\Sass\Commands;
 use Garden\Cli\Cli;
 use Garden\Cli\Args;
 use Tualo\Office\Basic\ICommandline;
+use Tualo\Office\Basic\CommandLineInstallSQL;
 use Tualo\Office\Basic\TualoApplication as App;
 use Tualo\Office\Basic\PostCheck;
 
@@ -20,7 +21,7 @@ class InstallMenuSQLCommandline implements ICommandline
     {
         $cli->command(self::getCommandName())
             ->description('installs needed menu items for scss')
-            ->opt('client', 'only use this client', true, 'string');
+            ->opt('client', 'only use this client', false, 'string');
     }
 
 
@@ -68,7 +69,19 @@ class InstallMenuSQLCommandline implements ICommandline
                 }
             };
             $clientName = $args->getOpt('client');
-            if (is_null($clientName)) $clientName = '';
+            if (is_null($clientName)) {
+                $clientName = '';
+                if (!CommandLineInstallSQL::defaultClient()) {
+                    $clientName = '';
+                } else {
+                    $clientName = CommandLineInstallSQL::defaultClient();
+                }
+            }
+            if ($clientName == '') {
+                PostCheck::formatPrintLn(['red'], "\t" . ' --client is required when multiple clients exist');
+                exit();
+            }
+
             self::setupClients($msg, $clientName, $file, $installSQL);
         }
     }
