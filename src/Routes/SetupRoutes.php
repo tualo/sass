@@ -4,7 +4,7 @@ namespace Tualo\Office\Sass\Routes;
 
 use Tualo\Office\Basic\TualoApplication as App;
 use Tualo\Office\Basic\Route as BasicRoute;
-use Tualo\Office\Sass\ImportSCSS;
+use Tualo\Office\Sass\Import as SassImport;
 use Tualo\Office\Sass\Sass;
 use MatthiasMullie\Minify\CSS;
 use Tualo\Office\Basic\Path;
@@ -20,14 +20,14 @@ class SetupRoute extends \Tualo\Office\Basic\RouteWrapper
     {
         BasicRoute::add('/scss/import' . '', function ($matches) {
             App::contenttype('application/json');
-            ImportSCSS::import();
+            SassImport::import();
             App::result('success', true);
         }, ['get'], true, [], self::scope());
 
 
         BasicRoute::add('/scss/replaceimport' . '', function ($matches) {
             App::contenttype('application/json');
-            ImportSCSS::import(true);
+            SassImport::import(true);
             App::result('success', true);
         }, ['get'], true, [], self::scope());
 
