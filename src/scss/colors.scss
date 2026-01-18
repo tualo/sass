@@ -1,0 +1,43 @@
+$primary : #007bff !default;
+$secondary : #6c757d !default;
+$success : #28a745 !default;
+$info : #17a2b8 !default;
+$warning : #ffc107 !default;
+$danger : #dc3545 !default;
+$light : #f8f9fa !default;
+$dark : #343a40 !default;
+
+$body-bg: $light !default;
+$body-color: $dark !default;
+
+$grays: (
+    "100": $gray-100,
+    "200": $gray-200,
+    "300": $gray-300,
+    "400": $gray-400,
+    "500": $gray-500,
+    "600": $gray-600,
+    "700": $gray-700,
+    "800": $gray-800,
+    "900": $gray-900) !default;
+
+:root {
+    $colors: map-merge(("primary": $primary,
+                "secondary": $secondary,
+                "success": $success,
+                "info": $info,
+                "warning": $warning,
+                "danger": $danger,
+                "light": $light,
+                "dark": $dark,
+                "text": $body-color,
+                "background": $body-bg ),
+            $grays
+    );
+
+$prefix: 'color-';
+
+@each $color, $value in $colors {
+    --#{$prefix}#{$color}: #{$value};
+}
+}

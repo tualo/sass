@@ -1,0 +1,12 @@
+body {
+    font-family: sans-serif;
+    line-height: 1.42857;
+    color: var(--color-text);
+    background-color: var(--color-background);
+
+    .page {
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        min-height: 100vh;
+    }
+}

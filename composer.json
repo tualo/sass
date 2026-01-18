@@ -1,0 +1,25 @@
+{
+  "name": "tualo/sass",
+  "description": "sass for tualo office",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Thomas Hoffmann",
+      "email": "thomas.hoffmann@tualo.de"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Tualo\\Office\\Sass\\": "src/"
+    },
+    "files": [
+      "src/functions.php"
+    ]
+  },
+  "minimum-stability": "dev",
+  "require": {
+    "matthiasmullie/minify": "1.3.75"
+  },
+  "version": "1.0.0"
+}
