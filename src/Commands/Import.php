@@ -8,7 +8,7 @@ use Tualo\Office\Basic\ICommandline;
 use Tualo\Office\Basic\CommandLineInstallSQL;
 use Tualo\Office\Basic\TualoApplication as App;
 use Tualo\Office\Basic\PostCheck;
-use Tualo\Office\Sass\ImportSCSS;
+use Tualo\Office\Sass\Import as SassImport;
 
 class Import implements ICommandline
 {
@@ -55,7 +55,7 @@ class Import implements ICommandline
         $install = function (Args $args) {
 
 
-            ImportSCSS::import($args->getOpt('force', false), App::get('clientDB'), $args->getOpt('path', ''), $args->getOpt('prefix', ''));
+            SassImport::import($args->getOpt('force', false), App::get('clientDB'), $args->getOpt('path', ''), $args->getOpt('prefix', ''));
         };
         $clientName = $args->getOpt('client');
         if (is_null($clientName)) {

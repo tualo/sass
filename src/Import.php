@@ -5,7 +5,7 @@ namespace Tualo\Office\Sass;
 use Tualo\Office\Basic\TualoApplication as App;
 
 
-class ImportSCSS
+class Import
 {
 
     public static function rglob(string $patterns, $flags = GLOB_NOSORT): array
