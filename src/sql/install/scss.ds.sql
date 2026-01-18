@@ -6,5 +6,6 @@ INSERT  IGNORE INTO `ds_column_list_label` (`table_name`, `column_name`, `langua
 ('scss','filename','DE','Datei','gridcolumn',NULL,0,'','','',0,1,'',0,1.00,'ASC','left','',NULL);
 INSERT  IGNORE INTO `ds_column_form_label` (`table_name`, `column_name`, `language`, `label`, `xtype`, `field_path`, `position`, `hidden`, `active`, `allowempty`, `fieldgroup`, `flex`, `hint`) VALUES ('scss','content','DE','Inhalt','tualocode','Allgemein/Angaben',1,0,1,1,NULL,NULL,'\'\''),
 ('scss','filename','DE','Datei','textfield','Allgemein/Angaben',0,0,1,1,NULL,NULL,'\'\'');
-INSERT  IGNORE INTO `ds_addcommands` (`table_name`, `xtype`, `location`, `position`, `label`, `iconCls`) VALUES ('scss','bootstrap_compiler_command','toolbar',1,'Bootstrap-Kompiler','');
+INSERT  IGNORE INTO `ds_addcommands` (`table_name`, `xtype`, `location`, `position`, `label`, `iconCls`) VALUES ('scss','scss_compiler_command','toolbar',1,'Sass-Kompiler','');
+INSERT  IGNORE INTO `ds_addcommands` (`table_name`, `xtype`, `location`, `position`, `label`, `iconCls`) VALUES ('scss','scss_autocompiler_command','toolbar',1,'Sass-Autokompiler','');
 INSERT  IGNORE INTO `ds_access` (`role`, `table_name`, `read`, `write`, `delete`, `append`, `existsreal`) VALUES ('administration','scss',1,1,1,1,NULL);
