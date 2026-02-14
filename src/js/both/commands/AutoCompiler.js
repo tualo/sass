@@ -53,7 +53,7 @@ Ext.define('Tualo.scss.commands.AutoCompiler', {
   run: async function () {
     let me = this;
     me.record.store.on('datachanged', async function () {
-      let res = await (await fetch('./scss/compile')).json();
+      let res = await (await fetch('./scss-setup/compile')).json();
       if (res.success !== true) {
         if (res.return) {
           Ext.toast({

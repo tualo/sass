@@ -34,40 +34,44 @@ class SetupRoute extends \Tualo\Office\Basic\RouteWrapper
 
         BasicRoute::add('/scss/compile' . '', function ($matches) {
             App::contenttype('application/json');
+            try {
+                if (($cmd = App::configuration('scss', 'cmd', false)) == false) throw new \Exception('scss cmd not found');
 
-            if (($cmd = App::configuration('scss', 'cmd', false)) == false) throw new \Exception('scss cmd not found');
-
-            $sql = 'select * from scss';
-            $db = App::get('session')->getDB();
-            $data = $db->direct($sql);
-            foreach ($data as $row) {
-                $filename = Path::join(Sass::getCompilerPath(), $row['filename']);
-                $dirname = dirname($filename);
-                if (!is_dir($dirname)) {
-                    mkdir($dirname, 0777, true);
+                $sql = 'select * from scss';
+                $db = App::get('session')->getDB();
+                $data = $db->direct($sql);
+                foreach ($data as $row) {
+                    $filename = Path::join(Sass::getCompilerPath(), $row['filename']);
+                    $dirname = dirname($filename);
+                    if (!is_dir($dirname)) {
+                        mkdir($dirname, 0777, true);
+                    }
+                    file_put_contents($filename, $row['content']);
                 }
-                file_put_contents($filename, $row['content']);
-            }
 
-            $resfilename = Path::join(Sass::getCachePath(), 'bootstrap.css');
-            if (!is_dir(dirname($resfilename))) {
-                mkdir(dirname($resfilename), 0777, true);
-            }
+                $resfilename = Path::join(Sass::getCachePath(), 'bootstrap.css');
+                if (!is_dir(dirname($resfilename))) {
+                    mkdir(dirname($resfilename), 0777, true);
+                }
 
-            $entryPoint = Path::join(Sass::getCompilerPath(),  'bootstrap.scss');
-            if (file_exists(Path::join(Sass::getCompilerPath(), 'index.scss'))) $entryPoint = Path::join(Sass::getCompilerPath(), 'index.scss');
-            exec($cmd . ' ' . $entryPoint . ' ' . $resfilename . ' 2>&1', $return, $res_code);
-            App::result('return', $return);
-            if ($res_code != 0) {
+                $entryPoint = Path::join(Sass::getCompilerPath(),  'bootstrap.scss');
+                if (file_exists(Path::join(Sass::getCompilerPath(), 'index.scss'))) $entryPoint = Path::join(Sass::getCompilerPath(), 'index.scss');
+                exec($cmd . ' ' . $entryPoint . ' ' . $resfilename . ' 2>&1', $return, $res_code);
                 App::result('return', $return);
-                throw new \Exception('scss compile error');
-            } else {
-            }
-            $minifier = new CSS($resfilename);
-            $resfilename = Path::join(Sass::getCachePath(), 'bootstrap.min.css');
-            $minifier->minify($resfilename);
+                if ($res_code != 0) {
+                    App::result('return', $return);
+                    throw new \Exception('scss compile error');
+                } else {
+                }
+                $minifier = new CSS($resfilename);
+                $resfilename = Path::join(Sass::getCachePath(), 'bootstrap.min.css');
+                $minifier->minify($resfilename);
 
-            App::result('success', true);
+                App::result('success', true);
+            } catch (\Exception $e) {
+                App::result('success', false);
+                App::result('msg', $e->getMessage());
+            }
         }, ['get'], true, [], self::scope());
     }
 }

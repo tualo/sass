@@ -52,7 +52,7 @@ Ext.define('Tualo.scss.commands.Compiler', {
     let me = this;
     me.getComponent('syncform').hide();
     me.getComponent('waitpanel').show();
-    let res = await (await fetch('./scss/compile')).json();
+    let res = await (await fetch('./scss-setup/compile')).json();
     if (res.success !== true) {
       if (res.return) {
         Ext.toast({
