@@ -18,21 +18,21 @@ class SetupRoute extends \Tualo\Office\Basic\RouteWrapper
 
     public static function register()
     {
-        BasicRoute::add('/scss/import' . '', function ($matches) {
+        BasicRoute::add('/scss-setup/import' . '', function ($matches) {
             App::contenttype('application/json');
             SassImport::import();
             App::result('success', true);
         }, ['get'], true, [], self::scope());
 
 
-        BasicRoute::add('/scss/replaceimport' . '', function ($matches) {
+        BasicRoute::add('/scss-setup/replaceimport' . '', function ($matches) {
             App::contenttype('application/json');
             SassImport::import(true);
             App::result('success', true);
         }, ['get'], true, [], self::scope());
 
 
-        BasicRoute::add('/scss/compile' . '', function ($matches) {
+        BasicRoute::add('/scss-setup/compile' . '', function ($matches) {
             App::contenttype('application/json');
             try {
                 if (($cmd = App::configuration('scss', 'cmd', false)) == false) throw new \Exception('scss cmd not found');
