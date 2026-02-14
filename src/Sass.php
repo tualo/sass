@@ -10,14 +10,14 @@ class Sass
 {
     public static function getCachePath(): string
     {
-        $cachePath = Path::join([App::get('basePath'), 'cache']);
+        $cachePath = Path::join(App::get('basePath'), 'cache');
         $cachePath = App::configuration('scss', 'cache_path', $cachePath);
         return $cachePath;
     }
 
     public static function getCompilerPath(): string
     {
-        $compilerPath = Path::join([App::get('tempPath'), 'scss']);
+        $compilerPath = Path::join(App::get('tempPath'), 'scss');
         $compilerPath = App::configuration('scss', 'compiler_path', $compilerPath);
         return $compilerPath;
     }
