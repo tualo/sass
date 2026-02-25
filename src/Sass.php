@@ -27,11 +27,11 @@ class Sass
     public static function deliverFile($matches)
     {
         $dir = self::getCachePath();
+        self::compile(str_replace('.min', '', str_replace('.css', '', $matches['file'])));
         if (
             BasicRoute::checkDoubleDots($matches, 'file', 'Path contains ".."') &&
             file_exists(Path::join($dir, $matches['file']))
         ) {
-            self::compile(str_replace('.min', '', str_replace('.css', '', $matches['file'])));
             App::etagFile(Path::join($dir, $matches['file']), true);
             BasicRoute::$finished = true;
             http_response_code(200);
