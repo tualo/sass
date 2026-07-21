@@ -17,6 +17,7 @@ class CMSRoute extends \Tualo\Office\Basic\RouteWrapper
     {
 
         BasicRoute::add('/tualocms/page/scss/(?P<file>[\/.\w\d\-\_\.]+)' . '', function ($matches) {
+
             Sass::deliverFile($matches);
         }, ['get'], true, [], self::scope());
     }
