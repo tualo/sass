@@ -18,7 +18,6 @@ class CSS implements IMiddleware
                 }
                 foreach ($fileList as $file) {
                     $file = trim($file);
-                    TualoApplication::stylesheet($file, 100000);
                     TualoApplication::stylesheet("./scss/" . $file . ".css", 100000);
                 }
             } catch (\Exception $e) {
