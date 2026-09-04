@@ -1,5 +1,6 @@
 <?php
 
+require_once "Middlewares/CSS.php";
 
 require_once "Routes/CMSRoute.php";
 require_once "Routes/SCSSRoute.php";
