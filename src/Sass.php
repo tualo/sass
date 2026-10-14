@@ -24,7 +24,7 @@ class Sass
     }
 
 
-    public static function deliverFile($matches)
+    public static function deliverFile(array $matches)
     {
         $dir = self::getCachePath();
         self::compile(str_replace('.min', '', str_replace('.css', '', $matches['file'])));
@@ -46,7 +46,10 @@ class Sass
 
     public static function compile(string $fileName)
     {
-        if (($cmd = App::configuration('scss', 'cmd', false)) == false) throw new \Exception('scss cmd not found');
+        if (($cmd = App::configuration('scss', 'cmd', false)) == false) {
+            App::logger('sass')->error('scss cmd not found');
+            throw new \Exception('scss cmd not found');
+        }
 
         $sql = 'select * from scss order by filename';
         $db = App::get('session')->getDB();
