@@ -47,7 +47,7 @@ class Sass
     public static function compile(string $fileName)
     {
         if (($cmd = App::configuration('scss', 'cmd', false)) == false) {
-            App::logger('sass')->error('scss cmd not found');
+            App::logger('sass')->error('scss cmd not found', []);
             throw new \Exception('scss cmd not found');
         }
 
