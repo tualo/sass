@@ -6,7 +6,7 @@ Ext.define('Tualo.routes.Scss', {
     },
     url: 'scss',
     handler: {
-        action: function (tablename) {
+        action: function () {
             let type = 'dsview';
             let mainView = Ext.getApplication().getMainView();
             let tablename = 'scss';
