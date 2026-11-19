@@ -21,6 +21,7 @@ class CSS implements IMiddleware
                     TualoApplication::stylesheet("./scss/" . $file . ".min.css", 100000);
                 }
             } catch (\Exception $e) {
+                TualoApplication::set('message', 'Das Sytsem ist derzeit nicht erreichbar (Sass CSS)');
                 TualoApplication::set('maintanceMode', 'on');
                 TualoApplication::addError($e->getMessage());
             }
